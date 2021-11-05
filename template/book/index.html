@@ -1,0 +1,83 @@
+{% extends 'base.html'%}
+
+{% block auth %}
+
+
+<div class="container mt-5">
+
+    <h1>즐겨찾기</h1>
+   
+    <div class="text-end">
+        <a href="{% url 'book:create' %}"><button class="btn btn-success">+ ADD</button></a>
+    </div>
+ 
+    <div class="row">
+        {% for i in blist %}
+            <div class="col-lg-4 mt-4">
+                <div class="card text-center">
+                    <div class="card-body" {% if i.impo %} style="background-color: rgba(30, 255, 0, 0.267);" {%endif%}>
+                        <h5 class="card-title mb-3">
+                            <b>{{ i.site_name |upper }}</b>
+                        </h5>
+                        <a href="{{ i.site_url }}" class="btn btn-outline-primary">LINK</a>
+                        <button type="button" data-bs-target="#exampleModal{{forloop.counter}}" class="btn btn-outline-danger" style="font-weight: bold;" data-bs-toggle="modal" >
+                            DEL
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">링크삭제 알림</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        링크를 삭제하시겠습니까?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                        <a href="{% url 'book:linkdel' i.id %}"><button type="button" class="btn btn-danger">삭제</button></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-footer text-muted">
+                        생성일 {{ i.cttime | date:'Y.M.d'}}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <nav aria-label="Page navigation example" class="mt-5 mb-5">
+        <ul class="pagination justify-content-center">
+
+            {% if blist.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="{% url 'book:index' %}?page={{blist.previous_page_number}}">Previous</a>
+            </li>
+            {% endif %}
+
+            {% for i in blist.paginator.page_range %}
+                <li class="page-item {% if blist.number == i %}active{% endif %}"><a class="page-link" href="{% url 'book:index' %}?page={{i}}">{{i}}</a></li>
+            {% endfor %}
+            
+
+            {% if blist.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{% url 'book:index' %}?page={{blist.next_page_number}}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+
+
+
+
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block auth %}
+
+<div class="container mt-5">
+    <h1><b>PDF READER</b></h1>
+    <hr>
+
+    <h4 class="mt-5">글자 추출할 PDF File 를 넣어주세요</h4>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row mt-4 text-center">
+            <div class="col-lg-10">
+                <input type="file" name="pdf" class="form-control">
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-success">EXTRACT</button>
+            </div>
+        </div>
+    </form>
+    <textarea class="mt-5 form-control" disabled style="height: 500px;">{{text}}</textarea>
+</div>
+
+{% endblock %}
